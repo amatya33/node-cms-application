@@ -27,6 +27,46 @@ app.get("/", (req,res)=>{
     })
 })
 
+// GET API => /blogs (All blogs)
+app.get("/blogs", async (req, res)=>{
+    // fetching/reading all Blogs from Blog model
+    const blogs = await Blog.find()
+
+    // check if blogs contains data or not
+    if(blogs.length == 0){
+            res.json({
+            status: 404,
+            response: "No blog found"
+        })
+    }else{
+        res.json({
+            status: 200,
+            response: "blogs fetched successfully",
+            data: blogs
+        })
+    }
+})
+
+// GET API => /blog/:id (single blog)
+app.get("/blogs/:id", async (req,res)=>{
+    const id = req.params.id
+    // const singleBlog = await Blog.findById(req.params.id)
+    const singleBlog =  await Blog.find({_id:id})
+
+    if(singleBlog.length == 0){
+        res.json({
+            status: 404,
+            message: "No blog found with that id"
+        })
+    }else{
+        res.json({
+            status: 200,
+            response: "blog fetched successfully",
+            data: singleBlog
+        })
+    }
+})
+
 // CREATE BLOG API
 app.post("/createBlog",async (req,res)=>{
 
